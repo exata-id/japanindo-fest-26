@@ -287,6 +287,11 @@
       flex-shrink: 0;
     }
 
+    .pill-item input:focus-visible + .pill-label {
+      outline: 2px solid var(--sakura-deep);
+      outline-offset: 3px;
+    }
+
     .pill-item input:checked + .pill-label {
       border-color: var(--sakura-main);
       background: var(--sakura-tint);
@@ -609,6 +614,21 @@
             Isi kedua username akun media sosial Anda serta prefektur tempat tinggal di Jepang saat ini.
           </p>
 
+          <div class="field-group" role="group" aria-labelledby="minatAfiliatorLabel" aria-describedby="err-minatAfiliator">
+            <label class="field-label" id="minatAfiliatorLabel">Apakah kamu tertarik untuk menjadi afiliator? (wajib)</label>
+            <div class="pill-group">
+              <label class="pill-item">
+                <input type="radio" name="minatAfiliator" value="Ya" required />
+                <span class="pill-label"><span class="pill-check">✓</span>Ya</span>
+              </label>
+              <label class="pill-item">
+                <input type="radio" name="minatAfiliator" value="Tidak" required />
+                <span class="pill-label"><span class="pill-check">✓</span>Tidak</span>
+              </label>
+            </div>
+            <div class="field-error" id="err-minatAfiliator">Pilih Ya atau Tidak untuk minat menjadi afiliator.</div>
+          </div>
+
           <div class="field-group">
             <label class="field-label" for="instagram">Username Instagram :</label>
             <input type="text" id="instagram" class="input-box" placeholder="e.g. @username_instagram" required aria-describedby="err-instagram" autocapitalize="none" spellcheck="false" />
@@ -837,6 +857,13 @@
     const scheduleFields = document.getElementById('scheduleFields');
     const attendanceNotice = document.getElementById('attendanceNotice');
 
+    document.querySelectorAll('input[name="minatAfiliator"]').forEach(radio => {
+      radio.addEventListener('change', () => {
+        setFieldError('err-minatAfiliator', null, false);
+        saveDraft();
+      });
+    });
+
     // Toggle Kehadiran di Step 3
     document.querySelectorAll('input[name="kehadiran"]').forEach(radio => {
       radio.addEventListener('change', (e) => {
@@ -921,9 +948,7 @@
         whatsapp: document.getElementById('whatsapp').value.trim().replace(/[\s\-]/g, ''),
         instagram: instagram,
         tiktok: tiktok,
-        // Tetap kirim kedua kolom lama agar kompatibel selama backend diperbarui.
-        platformSosmed: 'Instagram & TikTok',
-        usernameSosmed: `Instagram: ${instagram}; TikTok: ${tiktok}`,
+        minatAfiliator: document.querySelector('input[name="minatAfiliator"]:checked')?.value || '',
         domisili: document.getElementById('domisili').value,
         kehadiran: kehadiran,
         tanggalHadir: kehadiran === 'Ya' ? tanggalHadir : '-',
@@ -957,6 +982,10 @@
       }
 
       if (step === 2) {
+        const minatOk = ['Ya', 'Tidak'].includes(d.minatAfiliator);
+        setFieldError('err-minatAfiliator', null, !minatOk);
+        if (!minatOk) valid = false;
+
         for (const platform of ['instagram', 'tiktok']) {
           const userOk = d[platform].length >= 2;
           setFieldError(`err-${platform}`, platform, !userOk);
@@ -996,6 +1025,7 @@
         ['WhatsApp Aktif', data.whatsapp],
         ['Instagram', data.instagram],
         ['TikTok', data.tiktok],
+        ['Tertarik Menjadi Afiliator', data.minatAfiliator],
         ['Domisili di Jepang', data.domisili],
         ['Bisa Hadir?', data.kehadiran],
         ['Tanggal Kehadiran', data.tanggalHadir],
@@ -1022,6 +1052,7 @@
         `• WhatsApp Aktif: ${data.whatsapp}`,
         `• Instagram: ${data.instagram}`,
         `• TikTok: ${data.tiktok}`,
+        `• Tertarik Menjadi Afiliator: ${data.minatAfiliator}`,
         `• Domisili di Jepang: ${data.domisili}`,
         `• Bisa Hadir ke Festival: ${data.kehadiran}`,
         `• Tanggal Kehadiran: ${data.tanggalHadir}`,
@@ -1126,6 +1157,9 @@
         if (d.domisili) document.getElementById('domisili').value = d.domisili;
         if (d.jamDatang) document.getElementById('jamDatang').value = d.jamDatang;
 
+        if (['Ya', 'Tidak'].includes(d.minatAfiliator)) {
+          document.querySelector(`input[name="minatAfiliator"][value="${d.minatAfiliator}"]`).checked = true;
+        }
         if (d.kehadiran) {
           const r = document.querySelector(`input[name="kehadiran"][value="${d.kehadiran}"]`);
           if (r) {
