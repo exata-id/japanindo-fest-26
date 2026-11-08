@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>Indonesia Japan Friendship Festival 2026 — JP Smart SIM Promo</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      /* Dominant White & Sakura Palette */
+      --bg-page: #ECEEF2;
+      --bg-page-gradient: radial-gradient(circle at 50% 0%, #F9EFF3 0%, #ECEEF2 75%);
+      --card-bg: #FFFFFF;
+      
+      --sakura-main: #FF8FA8;       /* Warna utama tombol & progress bar */
+      --sakura-hover: #FF7896;      /* Hover tombol utama */
+      --sakura-deep: #E11D48;       /* Aksen teks/ikon kontras tinggi */
+      --sakura-soft: #FFE4EC;       /* Background lingkaran centang pada pill */
+      --sakura-tint: #FFF8FA;       /* Tint halus pada elemen aktif */
+      --sakura-border: #FBCFE8;
+
+      --text-primary: #111827;
+      --text-secondary: #6B7280;
+      --text-muted: #9CA3AF;
+
+      --border-default: #E5E7EB;
+      --border-hover: #D1D5DB;
+      --btn-back-bg: #F3F4F6;
+      --btn-back-hover: #E5E7EB;
+
+      --whatsapp-green: #22C55E;
+      --whatsapp-hover: #16A34A;
+      --error-color: #EF4444;
+      --error-bg: #FEF2F2;
+
+      --radius-card: 28px;
+      --radius-input: 14px;
+      --radius-pill: 9999px;
+      --shadow-card: 0 20px 50px rgba(17, 24, 39, 0.06), 0 4px 12px rgba(17, 24, 39, 0.03);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-page);
+      background-image: var(--bg-page-gradient);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 32px 16px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Main Floating Card */
+    .card {
+      width: 100%;
+      max-width: 520px;
+      background: var(--card-bg);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-card);
+      padding: 36px 40px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    /* Clean Banner Header */
+    .festival-banner {
+      width: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 24px;
+      border: 1px solid #F3F4F6;
+      background: #FFFDFD;
+    }
+
+    .festival-banner img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+
+    /* Step Progress Header */
+    .step-header {
+      margin-bottom: 26px;
+    }
+
+    .step-counter {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .step-badge-promo {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--sakura-deep);
+      background: var(--sakura-soft);
+      padding: 3px 10px;
+      border-radius: var(--radius-pill);
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 4px;
+      background: #F1F3F5;
+      border-radius: var(--radius-pill);
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 25%;
+      background: var(--sakura-main);
+      border-radius: var(--radius-pill);
+      transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Step Typography */
+    .step-title {
+      font-size: 1.55rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.025em;
+      line-height: 1.25;
+      margin-bottom: 10px;
+    }
+
+    .step-subtitle {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      margin-bottom: 26px;
+    }
+
+    .step-subtitle strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    /* Step Panels */
+    .step-panel {
+      display: none;
+      animation: slideFade 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .step-panel.active {
+      display: block;
+    }
+
+    /* Form Controls */
+    .field-group {
+      margin-bottom: 22px;
+    }
+
+    .field-label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+    }
+
+    .input-box,
+    .select-box {
+      width: 100%;
+      height: 50px;
+      padding: 0 18px;
+      font-size: 0.925rem;
+      font-family: inherit;
+      color: var(--text-primary);
+      background: #FFFFFF;
+      border: 1.5px solid var(--border-default);
+      border-radius: var(--radius-input);
+      transition: all 0.2s ease;
+      appearance: none;
+    }
+
+    .input-box::placeholder {
+      color: var(--text-muted);
+    }
+
+    .input-box:hover,
+    .select-box:hover {
+      border-color: var(--border-hover);
+    }
+
+    .input-box:focus,
+    .select-box:focus {
+      outline: none;
+      border-color: var(--sakura-main);
+      box-shadow: 0 0 0 4px rgba(255, 143, 168, 0.15);
+    }
+
+    .input-box.invalid,
+    .select-box.invalid {
+      border-color: var(--error-color);
+      background: var(--error-bg);
+    }
+
+    .select-wrapper {
+      position: relative;
+    }
+
+    .select-wrapper::after {
+      content: '';
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      width: 8px;
+      height: 8px;
+      border-right: 1.8px solid var(--text-secondary);
+      border-bottom: 1.8px solid var(--text-secondary);
+      transform: translateY(-65%) rotate(45deg);
+      pointer-events: none;
+    }
+
+    /* Pill Selector Chips (Matching Reference UI) */
+    .pill-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .pill-item {
+      position: relative;
+    }
+
+    .pill-item input {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .pill-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 11px 20px;
+      border-radius: var(--radius-pill);
+      border: 1.5px solid var(--border-default);
+      background: #FFFFFF;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .pill-label:hover {
+      border-color: var(--border-hover);
+      background: #FAFAFA;
+    }
+
+    .pill-check {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--sakura-soft);
+      color: var(--sakura-deep);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .pill-item input:checked + .pill-label {
+      border-color: var(--sakura-main);
+      background: var(--sakura-tint);
+      font-weight: 600;
+      padding-left: 14px;
+    }
+
+    .pill-item input:checked + .pill-label .pill-check {
+      display: inline-flex;
+      animation: popIn 0.2s ease-out;
+    }
+
+    /* Field Error Message */
+    .field-error {
+      display: none;
+      font-size: 0.78rem;
+      color: var(--error-color);
+      margin-top: 6px;
+      font-weight: 500;
+    }
+
+    /* Soft Notice Box (When user selects "Tidak Bisa Hadir") */
+    .notice-card {
+      display: none;
+      background: var(--sakura-tint);
+      border: 1px solid var(--sakura-border);
+      border-radius: var(--radius-input);
+      padding: 14px 16px;
+      margin-top: 14px;
+      font-size: 0.84rem;
+      color: #881337;
+      line-height: 1.5;
+    }
+
+    /* Review Card on Final Step */
+    .review-list {
+      background: #F9FAFB;
+      border: 1px solid var(--border-default);
+      border-radius: 16px;
+      padding: 6px 18px;
+      margin-bottom: 16px;
+    }
+
+    .review-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #F1F3F5;
+      font-size: 0.86rem;
+      gap: 16px;
+    }
+
+    .review-item:last-child {
+      border-bottom: none;
+    }
+
+    .review-key {
+      color: var(--text-secondary);
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+
+    .review-val {
+      color: var(--text-primary);
+      font-weight: 600;
+      text-align: right;
+      word-break: break-word;
+    }
+
+    /* Global Alert Banner */
+    .global-alert {
+      display: none;
+      background: var(--error-bg);
+      border: 1px solid #FECACA;
+      color: #B91C1C;
+      padding: 12px 16px;
+      border-radius: var(--radius-input);
+      font-size: 0.84rem;
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+
+    /* Bottom Navigation Bar (Matching Reference UI) */
+    .nav-actions {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .btn {
+      height: 46px;
+      padding: 0 26px;
+      border-radius: 13px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-back {
+      background: var(--btn-back-bg);
+      color: var(--text-primary);
+    }
+
+    .btn-back:hover {
+      background: var(--btn-back-hover);
+    }
+
+    .btn-next {
+      background: var(--sakura-main);
+      color: var(--text-primary);
+      box-shadow: 0 4px 14px rgba(255, 143, 168, 0.35);
+    }
+
+    .btn-next:hover:not(:disabled) {
+      background: var(--sakura-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-next:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+
+    /* Spinner inside button */
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2.5px solid rgba(17, 24, 39, 0.25);
+      border-top-color: var(--text-primary);
+      border-radius: 50%;
+      animation: spin 0.75s linear infinite;
+      display: none;
+    }
+
+    /* Success Screen */
+    .success-view {
+      display: none;
+      text-align: center;
+      padding: 8px 0;
+      animation: slideFade 0.35s ease;
+    }
+
+    .success-badge {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: var(--sakura-soft);
+      color: var(--sakura-deep);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin: 0 auto 18px;
+    }
+
+    .btn-wa {
+      width: 100%;
+      height: 50px;
+      background: var(--whatsapp-green);
+      color: #FFFFFF;
+      border-radius: var(--radius-input);
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+      box-shadow: 0 6px 20px rgba(34, 197, 94, 0.25);
+      transition: background 0.2s ease;
+    }
+
+    .btn-wa:hover {
+      background: var(--whatsapp-hover);
+    }
+
+    .btn-copy {
+      margin-top: 10px;
+      width: 100%;
+      height: 42px;
+      background: transparent;
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-input);
+      color: var(--text-secondary);
+      font-size: 0.82rem;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .btn-copy:hover {
+      background: #F9FAFB;
+      color: var(--text-primary);
+    }
+
+    .hp-trap {
+      position: absolute;
+      left: -9999px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    @keyframes slideFade {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.6); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 540px) {
+      body {
+        padding: 16px 12px;
+      }
+      .card {
+        padding: 24px 20px;
+        border-radius: 24px;
+      }
+      .step-title {
+        font-size: 1.35rem;
+      }
+      .nav-actions {
+        margin-top: 26px;
+      }
+      .btn {
+        flex: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="card">
+    <!-- Banner Acara -->
+    <div class="festival-banner" id="bannerBox">
+      <img 
+        src="./assets/banner.jpg" 
+        alt="Indonesia Japan Friendship Festival 2026"
+        onerror="document.getElementById('bannerBox').style.display='none';"
+      />
+    </div>
+
+    <!-- Wizard Container -->
+    <div id="wizardContainer">
+      <!-- Progress Bar Header -->
+      <div class="step-header">
+        <div class="step-counter">
+          <span id="stepCounterText">Step 1/4</span>
+          <span class="step-badge-promo">🌸 Free 50GB / Bulan (2 Bulan)</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+      </div>
+
+      <div id="globalAlert" class="global-alert" role="alert"></div>
+
+      <form id="multiStepForm" novalidate>
+        <!-- Honeypot -->
+        <div class="hp-trap" aria-hidden="true">
+          <input type="text" id="website_url" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <!-- STEP 1: Nama & WhatsApp -->
+        <section class="step-panel active" data-step="1">
+          <h1 class="step-title">PROMO Gratis Internet 2 Bulan </br> 50GB/Bulan by JP Smart Sim</h1>
+          <p class="step-subtitle">
+            Silahkan isi data ini untuk konfirmasi kamu untuk mendapatkan <strong>PROMO Campaign dari JP Smart SIM Free Kuota 50 GB/bulan selama 2 bulan</strong>.
+          </p>
+
+          <div class="field-group">
+            <label class="field-label" for="namaLengkap">Nama lengkap:</label>
+            <input 
+              type="text" 
+              id="namaLengkap" 
+              class="input-box" 
+              placeholder="e.g. Budi Santoso" 
+              autocomplete="name" 
+            />
+            <div class="field-error" id="err-namaLengkap">Masukkan nama lengkap Anda (minimal 2 karakter).</div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="whatsapp">WhatsApp aktif:</label>
+            <input 
+              type="tel" 
+              id="whatsapp" 
+              class="input-box" 
+              placeholder="e.g. +818012345678 atau 081234567890" 
+              autocomplete="tel" 
+            />
+            <div class="field-error" id="err-whatsapp">Masukkan nomor WhatsApp aktif yang valid (8–15 digit angka).</div>
+          </div>
+        </section>
+
+        <!-- STEP 2: Sosmed & Domisili -->
+        <section class="step-panel" data-step="2">
+          <h2 class="step-title">Media Sosial & Domisili</h2>
+          <p class="step-subtitle">
+            Pilih salah satu akun media sosial aktif Anda serta prefektur tempat tinggal di Jepang saat ini.
+          </p>
+
+          <div class="field-group">
+            <label class="field-label">Pilih platform:</label>
+            <div class="pill-group">
+              <label class="pill-item">
+                <input type="radio" name="platformSosmed" value="Instagram" checked />
+                <span class="pill-label">
+                  <span class="pill-check">✓</span>
+                  Instagram
+                </span>
+              </label>
+              <label class="pill-item">
+                <input type="radio" name="platformSosmed" value="TikTok" />
+                <span class="pill-label">
+                  <span class="pill-check">✓</span>
+                  TikTok
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="usernameSosmed">Username akun:</label>
+            <input 
+              type="text" 
+              id="usernameSosmed" 
+              class="input-box" 
+              placeholder="e.g. @username_kamu" 
+            />
+            <div class="field-error" id="err-usernameSosmed">Username TikTok/Instagram wajib diisi.</div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="domisili">Domisili di Jepang saat ini:</label>
+            <div class="select-wrapper">
+              <select id="domisili" class="select-box">
+                <option value="">Pilih prefektur domisili...</option>
+                <optgroup label="Kanto (Tokyo & Sekitarnya)">
+                  <option value="Tokyo">Tokyo (東京都)</option>
+                  <option value="Kanagawa">Kanagawa (神奈川県)</option>
+                  <option value="Saitama">Saitama (埼玉県)</option>
+                  <option value="Chiba">Chiba (千葉県)</option>
+                  <option value="Ibaraki">Ibaraki (茨城県)</option>
+                  <option value="Tochigi">Tochigi (栃木県)</option>
+                  <option value="Gunma">Gunma (群馬県)</option>
+                </optgroup>
+                <optgroup label="Kansai / Kinki">
+                  <option value="Osaka">Osaka (大阪府)</option>
+                  <option value="Kyoto">Kyoto (京都府)</option>
+                  <option value="Hyogo">Hyogo (兵庫県)</option>
+                  <option value="Shiga">Shiga (滋賀県)</option>
+                  <option value="Nara">Nara (奈良県)</option>
+                  <option value="Wakayama">Wakayama (和歌山県)</option>
+                  <option value="Mie">Mie (三重県)</option>
+                </optgroup>
+                <optgroup label="Chubu & Tokai">
+                  <option value="Aichi">Aichi (愛知県)</option>
+                  <option value="Shizuoka">Shizuoka (静岡県)</option>
+                  <option value="Gifu">Gifu (岐阜県)</option>
+                  <option value="Nagano">Nagano (長野県)</option>
+                  <option value="Yamanashi">Yamanashi (山梨県)</option>
+                  <option value="Niigata">Niigata (新潟県)</option>
+                  <option value="Toyama">Toyama (富山県)</option>
+                  <option value="Ishikawa">Ishikawa (石川県)</option>
+                  <option value="Fukui">Fukui (福井県)</option>
+                </optgroup>
+                <optgroup label="Hokkaido & Tohoku">
+                  <option value="Hokkaido">Hokkaido (北海道)</option>
+                  <option value="Miyagi">Miyagi (宮城県)</option>
+                  <option value="Fukushima">Fukushima (福島県)</option>
+                  <option value="Aomori">Aomori (青森県)</option>
+                  <option value="Iwate">Iwate (岩手県)</option>
+                  <option value="Akita">Akita (秋田県)</option>
+                  <option value="Yamagata">Yamagata (山形県)</option>
+                </optgroup>
+                <optgroup label="Chugoku & Shikoku">
+                  <option value="Hiroshima">Hiroshima (広島県)</option>
+                  <option value="Okayama">Okayama (岡山県)</option>
+                  <option value="Yamaguchi">Yamaguchi (山口県)</option>
+                  <option value="Tottori">Tottori (鳥取県)</option>
+                  <option value="Shimane">Shimane (島根県)</option>
+                  <option value="Ehime">Ehime (愛媛県)</option>
+                  <option value="Kagawa">Kagawa (香川県)</option>
+                  <option value="Kochi">Kochi (高知県)</option>
+                  <option value="Tokushima">Tokushima (徳島県)</option>
+                </optgroup>
+                <optgroup label="Kyushu & Okinawa">
+                  <option value="Fukuoka">Fukuoka (福岡県)</option>
+                  <option value="Kumamoto">Kumamoto (熊本県)</option>
+                  <option value="Kagoshima">Kagoshima (鹿児島県)</option>
+                  <option value="Nagasaki">Nagasaki (長崎県)</option>
+                  <option value="Oita">Oita (大分県)</option>
+                  <option value="Miyazaki">Miyazaki (宮崎県)</option>
+                  <option value="Saga">Saga (佐賀県)</option>
+                  <option value="Okinawa">Okinawa (沖縄県)</option>
+                </optgroup>
+              </select>
+            </div>
+            <div class="field-error" id="err-domisili">Pilih prefektur domisili Anda saat ini.</div>
+          </div>
+        </section>
+
+        <!-- STEP 3: Kehadiran & Jadwal Festival -->
+        <section class="step-panel" data-step="3">
+          <h2 class="step-title">Jadwal Kehadiran Festival</h2>
+          <p class="step-subtitle">
+            Pengambilan dan aktivasi kartu promo wajib dilakukan langsung di lokasi <strong>Indonesia Japan Friendship Festival 2026</strong>.
+          </p>
+
+          <div class="field-group">
+            <label class="field-label">Bisa hadir ke acara festival?</label>
+            <div class="pill-group">
+              <label class="pill-item">
+                <input type="radio" name="kehadiran" value="Ya" />
+                <span class="pill-label">
+                  <span class="pill-check">✓</span>
+                  Ya, bisa hadir
+                </span>
+              </label>
+              <label class="pill-item">
+                <input type="radio" name="kehadiran" value="Tidak" />
+                <span class="pill-label">
+                  <span class="pill-check">✓</span>
+                  Tidak bisa
+                </span>
+              </label>
+            </div>
+            <div class="field-error" id="err-kehadiran">Pilih konfirmasi kehadiran Anda.</div>
+
+            <div id="attendanceNotice" class="notice-card">
+              <strong>Aktivasi Wajib di Lokasi Festival</strong><br />
+              Mohon maaf, klaim promo Free Kuota 50 GB/Bulan mewajibkan kehadiran langsung di booth acara (12–13 Desember 2026) untuk aktivasi kartu.
+            </div>
+          </div>
+
+          <div id="scheduleFields" style="display: none;">
+            <div class="field-group">
+              <label class="field-label">Jika ya, pada tanggal berapa?</label>
+              <div class="pill-group">
+                <label class="pill-item">
+                  <input type="radio" name="tanggalHadir" value="Sabtu, 12 Desember 2026" />
+                  <span class="pill-label">
+                    <span class="pill-check">✓</span>
+                    12 Des 2026 (Sabtu)
+                  </span>
+                </label>
+                <label class="pill-item">
+                  <input type="radio" name="tanggalHadir" value="Minggu, 13 Desember 2026" />
+                  <span class="pill-label">
+                    <span class="pill-check">✓</span>
+                    13 Des 2026 (Minggu)
+                  </span>
+                </label>
+                <label class="pill-item">
+                  <input type="radio" name="tanggalHadir" value="Hadir Kedua Hari (12 & 13 Desember 2026)" />
+                  <span class="pill-label">
+                    <span class="pill-check">✓</span>
+                    Kedua Hari (12 & 13 Des)
+                  </span>
+                </label>
+              </div>
+              <div class="field-error" id="err-tanggalHadir">Pilih tanggal kedatangan Anda.</div>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label" for="jamDatang">Perkiraan jam datang:</label>
+              <div class="select-wrapper">
+                <select id="jamDatang" class="select-box">
+                  <option value="">Pilih perkiraan jam kedatangan...</option>
+                  <option value="10:00 - 12:00 JST">10:00 – 12:00 JST (Pagi)</option>
+                  <option value="12:00 - 14:00 JST">12:00 – 14:00 JST (Siang)</option>
+                  <option value="14:00 - 16:00 JST">14:00 – 16:00 JST (Sore)</option>
+                  <option value="16:00 - 18:00 JST">16:00 – 18:00 JST (Menjelang Malam)</option>
+                  <option value="18:00 - Selesai">18:00 JST – Selesai</option>
+                </select>
+              </div>
+              <div class="field-error" id="err-jamDatang">Pilih perkiraan jam kedatangan Anda.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- STEP 4: Review & Submit -->
+        <section class="step-panel" data-step="4">
+          <h2 class="step-title">Periksa Kembali Data Anda</h2>
+          <p class="step-subtitle">
+            Pastikan seluruh data konfirmasi di bawah sudah sesuai sebelum dikirim dan diteruskan ke WhatsApp Admin.
+          </p>
+
+          <div class="review-list" id="reviewList"></div>
+        </section>
+
+        <!-- Bottom Navigation Buttons -->
+        <div class="nav-actions">
+          <button type="button" id="prevBtn" class="btn btn-back" style="display: none;">
+            Back
+          </button>
+          <button type="button" id="nextBtn" class="btn btn-next">
+            <span class="spinner" id="btnSpinner"></span>
+            <span id="nextBtnLabel">Next</span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Success & Direct WhatsApp View -->
+    <div id="successView" class="success-view">
+      <div class="success-badge">✓</div>
+      <h2 class="step-title">Registrasi Campaign kamu Sukses!</h2>
+      <p class="step-subtitle" style="margin-bottom: 18px;">
+        Silakan tekan tombol di bawah untuk mengirim pesan konfirmasi otomatis ke WhatsApp resmi JP Smart SIM.
+      </p>
+
+      <div class="review-list" id="finalSummaryList"></div>
+
+      <a href="#" id="waDirectLink" target="_blank" rel="noopener noreferrer" class="btn-wa">
+        Lanjutkan ke WhatsApp
+      </a>
+
+      <button type="button" id="copyTextBtn" class="btn-copy">
+        Salin teks pesan (jika WhatsApp tidak terbuka otomatis)
+      </button>
+    </div>
+  </main>
+
+  <script>
+    /**
+     * KONFIGURASI INTEGRASI
+     * Ganti nilai SCRIPT_URL dengan Web App URL dari Google Apps Script Anda.
+     */
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwHhz4Qj_NVGQRISzmFrD-nwG2iUYi4XPH9XCuFkJ-QBbrNvwbGMObAH7--A6cg0KewCg/exec';
+    const TARGET_WHATSAPP = '6281188899744';
+    const STORAGE_KEY = 'ijff_2026_sakura_draft';
+
+    let currentStep = 1;
+    const totalSteps = 4;
+    let preparedWaMessage = '';
+
+    const panels = document.querySelectorAll('.step-panel');
+    const stepCounterText = document.getElementById('stepCounterText');
+    const progressFill = document.getElementById('progressFill');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const nextBtnLabel = document.getElementById('nextBtnLabel');
+    const btnSpinner = document.getElementById('btnSpinner');
+    const globalAlert = document.getElementById('globalAlert');
+    const scheduleFields = document.getElementById('scheduleFields');
+    const attendanceNotice = document.getElementById('attendanceNotice');
+
+    // Toggle Kehadiran di Step 3
+    document.querySelectorAll('input[name="kehadiran"]').forEach(radio => {
+      radio.addEventListener('change', (e) => {
+        setFieldError('err-kehadiran', null, false);
+        if (e.target.value === 'Ya') {
+          scheduleFields.style.display = 'block';
+          attendanceNotice.style.display = 'none';
+          nextBtn.disabled = false;
+        } else {
+          scheduleFields.style.display = 'none';
+          attendanceNotice.style.display = 'block';
+          nextBtn.disabled = true;
+        }
+        saveDraft();
+      });
+    });
+
+    // Navigasi Step
+    function updateStepUI() {
+      panels.forEach(panel => {
+        panel.classList.toggle('active', Number(panel.dataset.step) === currentStep);
+      });
+
+      stepCounterText.textContent = `Step ${currentStep}/${totalSteps}`;
+      progressFill.style.width = `${(currentStep / totalSteps) * 100}%`;
+      prevBtn.style.display = currentStep === 1 ? 'none' : 'inline-flex';
+      nextBtnLabel.textContent = currentStep === totalSteps ? 'Kirim & Klaim Promo' : 'Next';
+      globalAlert.style.display = 'none';
+
+      // Cek apakah di Step 3 user memilih "Tidak"
+      if (currentStep === 3) {
+        const kehadiranVal = document.querySelector('input[name="kehadiran"]:checked')?.value;
+        nextBtn.disabled = (kehadiranVal === 'Tidak');
+      } else {
+        nextBtn.disabled = false;
+      }
+
+      if (currentStep === 4) {
+        renderReviewList('reviewList', collectData());
+      }
+    }
+
+    prevBtn.addEventListener('click', () => {
+      if (currentStep > 1) {
+        currentStep--;
+        updateStepUI();
+      }
+    });
+
+    nextBtn.addEventListener('click', async () => {
+      if (!validateStep(currentStep)) return;
+
+      if (currentStep < totalSteps) {
+        currentStep++;
+        updateStepUI();
+      } else {
+        await submitForm();
+      }
+    });
+
+    // Dukungan tombol Enter untuk lanjut step
+    document.getElementById('multiStepForm').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        if (!nextBtn.disabled) nextBtn.click();
+      }
+    });
+
+    // Ambil seluruh nilai input
+    function collectData() {
+      const platform = document.querySelector('input[name="platformSosmed"]:checked')?.value || 'Instagram';
+      const rawUser = document.getElementById('usernameSosmed').value.trim().replace(/^@+/, '');
+      const kehadiran = document.querySelector('input[name="kehadiran"]:checked')?.value || '';
+      const tanggalHadir = document.querySelector('input[name="tanggalHadir"]:checked')?.value || '';
+
+      return {
+        namaLengkap: document.getElementById('namaLengkap').value.trim(),
+        whatsapp: document.getElementById('whatsapp').value.trim().replace(/[\s\-]/g, ''),
+        platformSosmed: platform,
+        usernameSosmed: rawUser ? '@' + rawUser : '',
+        domisili: document.getElementById('domisili').value,
+        kehadiran: kehadiran,
+        tanggalHadir: kehadiran === 'Ya' ? tanggalHadir : '-',
+        jamDatang: kehadiran === 'Ya' ? document.getElementById('jamDatang').value : '-',
+        website_url: document.getElementById('website_url').value,
+        userAgent: navigator.userAgent
+      };
+    }
+
+    function setFieldError(errId, inputId, isError) {
+      const errEl = document.getElementById(errId);
+      if (errEl) errEl.style.display = isError ? 'block' : 'none';
+      if (inputId) {
+        document.getElementById(inputId)?.classList.toggle('invalid', isError);
+      }
+    }
+
+    // Validasi Per Step
+    function validateStep(step) {
+      const d = collectData();
+      let valid = true;
+
+      if (step === 1) {
+        const nameOk = d.namaLengkap.length >= 2;
+        setFieldError('err-namaLengkap', 'namaLengkap', !nameOk);
+        if (!nameOk) valid = false;
+
+        const phoneOk = /^\+?[0-9]{8,15}$/.test(d.whatsapp);
+        setFieldError('err-whatsapp', 'whatsapp', !phoneOk);
+        if (!phoneOk) valid = false;
+      }
+
+      if (step === 2) {
+        const userOk = d.usernameSosmed.length >= 2;
+        setFieldError('err-usernameSosmed', 'usernameSosmed', !userOk);
+        if (!userOk) valid = false;
+
+        const domOk = Boolean(d.domisili);
+        setFieldError('err-domisili', 'domisili', !domOk);
+        if (!domOk) valid = false;
+      }
+
+      if (step === 3) {
+        if (!d.kehadiran) {
+          setFieldError('err-kehadiran', null, true);
+          return false;
+        }
+        if (d.kehadiran !== 'Ya') {
+          return false;
+        }
+        const dateOk = Boolean(d.tanggalHadir && d.tanggalHadir !== '-');
+        setFieldError('err-tanggalHadir', null, !dateOk);
+        if (!dateOk) valid = false;
+
+        const timeOk = Boolean(d.jamDatang && d.jamDatang !== '-');
+        setFieldError('err-jamDatang', 'jamDatang', !timeOk);
+        if (!timeOk) valid = false;
+      }
+
+      return valid;
+    }
+
+    function renderReviewList(containerId, data, regId = '') {
+      const box = document.getElementById(containerId);
+      const rows = [
+        regId ? ['ID Registrasi', regId] : null,
+        ['Nama Lengkap', data.namaLengkap],
+        ['WhatsApp Aktif', data.whatsapp],
+        [data.platformSosmed, data.usernameSosmed],
+        ['Domisili di Jepang', data.domisili],
+        ['Bisa Hadir?', data.kehadiran],
+        ['Tanggal Kehadiran', data.tanggalHadir],
+        ['Perkiraan Jam Datang', data.jamDatang]
+      ].filter(Boolean);
+
+      box.innerHTML = rows.map(([k, v]) => `
+        <div class="review-item">
+          <span class="review-key">${escapeHtml(k)}</span>
+          <span class="review-val">${escapeHtml(v)}</span>
+        </div>
+      `).join('');
+    }
+
+    function createWhatsappText(data, regId) {
+      return [
+        'Halo Admin JP Smart SIM! 🌸',
+        'Saya sudah mengisi form konfirmasi untuk mendapatkan *PROMO dari JP Smart SIM Free Kuota 50 GB/Perbulan selama 2 bulan* di *Indonesia Japan Friendship Festival 2026*.',
+        '',
+        '*DETAIL KONFIRMASI SAYA:*',
+        regId ? `• ID Registrasi: ${regId}` : null,
+        `• Nama Lengkap: ${data.namaLengkap}`,
+        `• WhatsApp Aktif: ${data.whatsapp}`,
+        `• ${data.platformSosmed}: ${data.usernameSosmed}`,
+        `• Domisili di Jepang: ${data.domisili}`,
+        `• Bisa Hadir ke Festival: ${data.kehadiran}`,
+        `• Tanggal Kehadiran: ${data.tanggalHadir}`,
+        `• Perkiraan Jam Datang: ${data.jamDatang}`,
+        '',
+        'Saya siap hadir langsung di lokasi festival untuk aktivasi kartu. Terima kasih! 🙏'
+      ].filter(Boolean).join('\n');
+    }
+
+    // Kirim ke Google Apps Script (Zero-Preflight CORS Safe)
+    async function submitForm() {
+      const data = collectData();
+      globalAlert.style.display = 'none';
+
+      if (!navigator.onLine) {
+        showAlert('Koneksi internet terputus. Periksa jaringan Anda lalu coba lagi.');
+        return;
+      }
+
+      setSubmitting(true);
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 15000);
+
+      try {
+        const res = await fetch(SCRIPT_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(data),
+          redirect: 'follow',
+          signal: controller.signal
+        });
+
+        clearTimeout(timer);
+
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const json = await res.json();
+
+        if (json.status !== 'success') {
+          throw new Error(json.message || 'Gagal menyimpan data.');
+        }
+
+        localStorage.removeItem(STORAGE_KEY);
+        showSuccessScreen(data, json.regId);
+
+      } catch (err) {
+        clearTimeout(timer);
+        let msg = 'Gagal mengirim data ke server. Silakan coba tekan tombol kirim sekali lagi.';
+        if (err.name === 'AbortError') {
+          msg = 'Waktu koneksi habis (timeout 15 detik). Silakan periksa sinyal Anda dan coba lagi.';
+        } else if (SCRIPT_URL.includes('GANTI_DENGAN_URL')) {
+          msg = 'URL Web App Google Apps Script belum dipasang pada variabel SCRIPT_URL.';
+        } else if (err.message) {
+          msg = `Terjadi kendala: ${err.message}`;
+        }
+        showAlert(msg);
+      } finally {
+        setSubmitting(false);
+      }
+    }
+
+    function setSubmitting(loading) {
+      nextBtn.disabled = loading;
+      prevBtn.disabled = loading;
+      btnSpinner.style.display = loading ? 'inline-block' : 'none';
+      nextBtnLabel.textContent = loading ? 'Menyimpan...' : 'Kirim & Klaim Promo';
+    }
+
+    function showAlert(msg) {
+      globalAlert.textContent = msg;
+      globalAlert.style.display = 'block';
+    }
+
+    function showSuccessScreen(data, regId) {
+      preparedWaMessage = createWhatsappText(data, regId);
+      document.getElementById('waDirectLink').href = `https://wa.me/${TARGET_WHATSAPP}?text=${encodeURIComponent(preparedWaMessage)}`;
+      renderReviewList('finalSummaryList', data, regId);
+
+      document.getElementById('wizardContainer').style.display = 'none';
+      document.getElementById('successView').style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Auto-save & Restore Draft
+    function saveDraft() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(collectData()));
+      } catch (e) {}
+    }
+
+    function loadDraft() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const d = JSON.parse(raw);
+
+        if (d.namaLengkap) document.getElementById('namaLengkap').value = d.namaLengkap;
+        if (d.whatsapp) document.getElementById('whatsapp').value = d.whatsapp;
+        if (d.usernameSosmed) document.getElementById('usernameSosmed').value = d.usernameSosmed.replace(/^@/, '');
+        if (d.domisili) document.getElementById('domisili').value = d.domisili;
+        if (d.jamDatang) document.getElementById('jamDatang').value = d.jamDatang;
+
+        if (d.platformSosmed) {
+          const r = document.querySelector(`input[name="platformSosmed"][value="${d.platformSosmed}"]`);
+          if (r) r.checked = true;
+        }
+        if (d.kehadiran) {
+          const r = document.querySelector(`input[name="kehadiran"][value="${d.kehadiran}"]`);
+          if (r) {
+            r.checked = true;
+            r.dispatchEvent(new Event('change'));
+          }
+        }
+        if (d.tanggalHadir && d.tanggalHadir !== '-') {
+          const r = document.querySelector(`input[name="tanggalHadir"][value="${d.tanggalHadir}"]`);
+          if (r) r.checked = true;
+        }
+      } catch (e) {}
+    }
+
+    document.getElementById('multiStepForm').addEventListener('input', saveDraft);
+    window.addEventListener('DOMContentLoaded', () => {
+      loadDraft();
+      updateStepUI();
+    });
+
+    // Tombol salin pesan cadangan
+    document.getElementById('copyTextBtn').addEventListener('click', async (e) => {
+      try {
+        await navigator.clipboard.writeText(preparedWaMessage);
+        e.target.textContent = '✓ Pesan berhasil disalin ke clipboard';
+      } catch (_) {}
+    });
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+  </script>
+</body>
+</html>
