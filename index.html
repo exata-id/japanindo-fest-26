@@ -605,38 +605,20 @@
         <section class="step-panel" data-step="2">
           <h2 class="step-title">Media Sosial & Domisili</h2>
           <p class="step-subtitle">
-            Pilih salah satu akun media sosial aktif Anda serta prefektur tempat tinggal di Jepang saat ini.
+            Kami juga sedang mencari afiliator untuk membantu program campaign ini, &amp; barangkali kamu terpilih. Boleh kami tahu Instagram &amp; TikTok kamu?<br /><br />
+            Isi kedua username akun media sosial Anda serta prefektur tempat tinggal di Jepang saat ini.
           </p>
 
           <div class="field-group">
-            <label class="field-label">Pilih platform:</label>
-            <div class="pill-group">
-              <label class="pill-item">
-                <input type="radio" name="platformSosmed" value="Instagram" checked />
-                <span class="pill-label">
-                  <span class="pill-check">✓</span>
-                  Instagram
-                </span>
-              </label>
-              <label class="pill-item">
-                <input type="radio" name="platformSosmed" value="TikTok" />
-                <span class="pill-label">
-                  <span class="pill-check">✓</span>
-                  TikTok
-                </span>
-              </label>
-            </div>
+            <label class="field-label" for="instagram">Username Instagram (wajib):</label>
+            <input type="text" id="instagram" class="input-box" placeholder="e.g. @username_instagram" required aria-describedby="err-instagram" autocapitalize="none" spellcheck="false" />
+            <div class="field-error" id="err-instagram">Username Instagram wajib diisi.</div>
           </div>
 
           <div class="field-group">
-            <label class="field-label" for="usernameSosmed">Username akun:</label>
-            <input 
-              type="text" 
-              id="usernameSosmed" 
-              class="input-box" 
-              placeholder="e.g. @username_kamu" 
-            />
-            <div class="field-error" id="err-usernameSosmed">Username TikTok/Instagram wajib diisi.</div>
+            <label class="field-label" for="tiktok">Username TikTok (wajib):</label>
+            <input type="text" id="tiktok" class="input-box" placeholder="e.g. @username_tiktok" required aria-describedby="err-tiktok" autocapitalize="none" spellcheck="false" />
+            <div class="field-error" id="err-tiktok">Username TikTok wajib diisi.</div>
           </div>
 
           <div class="field-group">
@@ -713,7 +695,7 @@
         <section class="step-panel" data-step="3">
           <h2 class="step-title">Jadwal Kehadiran Festival</h2>
           <p class="step-subtitle">
-            Pengambilan dan aktivasi kartu promo wajib dilakukan langsung di lokasi <strong>Indonesia Japan Friendship Festival 2026</strong>.
+            Pengambilan dan aktivasi kartu promo wajib dilakukan langsung di lokasi <strong>Indonesia Japan Friendship Festival 2026</strong> di <strong>Odaiba, Tokyo, Japan</strong>.
           </p>
 
           <div class="field-group">
@@ -750,14 +732,14 @@
                   <input type="radio" name="tanggalHadir" value="Sabtu, 12 Desember 2026" />
                   <span class="pill-label">
                     <span class="pill-check">✓</span>
-                    12 Des 2026 (Sabtu)
+                    Sabtu, 12 Desember 2026
                   </span>
                 </label>
                 <label class="pill-item">
                   <input type="radio" name="tanggalHadir" value="Minggu, 13 Desember 2026" />
                   <span class="pill-label">
                     <span class="pill-check">✓</span>
-                    13 Des 2026 (Minggu)
+                    Minggu, 13 Desember 2026
                   </span>
                 </label>
                 <label class="pill-item">
@@ -925,16 +907,23 @@
 
     // Ambil seluruh nilai input
     function collectData() {
-      const platform = document.querySelector('input[name="platformSosmed"]:checked')?.value || 'Instagram';
-      const rawUser = document.getElementById('usernameSosmed').value.trim().replace(/^@+/, '');
+      const normalizeUsername = (id) => {
+        const username = document.getElementById(id).value.trim().replace(/^@+/, '').trim();
+        return username ? '@' + username : '';
+      };
+      const instagram = normalizeUsername('instagram');
+      const tiktok = normalizeUsername('tiktok');
       const kehadiran = document.querySelector('input[name="kehadiran"]:checked')?.value || '';
       const tanggalHadir = document.querySelector('input[name="tanggalHadir"]:checked')?.value || '';
 
       return {
         namaLengkap: document.getElementById('namaLengkap').value.trim(),
         whatsapp: document.getElementById('whatsapp').value.trim().replace(/[\s\-]/g, ''),
-        platformSosmed: platform,
-        usernameSosmed: rawUser ? '@' + rawUser : '',
+        instagram: instagram,
+        tiktok: tiktok,
+        // Tetap kirim kedua kolom lama agar kompatibel selama backend diperbarui.
+        platformSosmed: 'Instagram & TikTok',
+        usernameSosmed: `Instagram: ${instagram}; TikTok: ${tiktok}`,
         domisili: document.getElementById('domisili').value,
         kehadiran: kehadiran,
         tanggalHadir: kehadiran === 'Ya' ? tanggalHadir : '-',
@@ -968,9 +957,11 @@
       }
 
       if (step === 2) {
-        const userOk = d.usernameSosmed.length >= 2;
-        setFieldError('err-usernameSosmed', 'usernameSosmed', !userOk);
-        if (!userOk) valid = false;
+        for (const platform of ['instagram', 'tiktok']) {
+          const userOk = d[platform].length >= 2;
+          setFieldError(`err-${platform}`, platform, !userOk);
+          if (!userOk) valid = false;
+        }
 
         const domOk = Boolean(d.domisili);
         setFieldError('err-domisili', 'domisili', !domOk);
@@ -1003,7 +994,8 @@
         regId ? ['ID Registrasi', regId] : null,
         ['Nama Lengkap', data.namaLengkap],
         ['WhatsApp Aktif', data.whatsapp],
-        [data.platformSosmed, data.usernameSosmed],
+        ['Instagram', data.instagram],
+        ['TikTok', data.tiktok],
         ['Domisili di Jepang', data.domisili],
         ['Bisa Hadir?', data.kehadiran],
         ['Tanggal Kehadiran', data.tanggalHadir],
@@ -1020,21 +1012,23 @@
 
     function createWhatsappText(data, regId) {
       return [
-        'Halo Admin JP Smart SIM! 🌸',
+        'Halo Admin JP Smart SIM!',
+        '',
         'Saya sudah mengisi form konfirmasi untuk mendapatkan *PROMO dari JP Smart SIM Free Kuota 50 GB/Perbulan selama 2 bulan* di *Indonesia Japan Friendship Festival 2026*.',
         '',
         '*DETAIL KONFIRMASI SAYA:*',
         regId ? `• ID Registrasi: ${regId}` : null,
         `• Nama Lengkap: ${data.namaLengkap}`,
         `• WhatsApp Aktif: ${data.whatsapp}`,
-        `• ${data.platformSosmed}: ${data.usernameSosmed}`,
+        `• Instagram: ${data.instagram}`,
+        `• TikTok: ${data.tiktok}`,
         `• Domisili di Jepang: ${data.domisili}`,
         `• Bisa Hadir ke Festival: ${data.kehadiran}`,
         `• Tanggal Kehadiran: ${data.tanggalHadir}`,
         `• Perkiraan Jam Datang: ${data.jamDatang}`,
         '',
-        'Saya siap hadir langsung di lokasi festival untuk aktivasi kartu. Terima kasih! 🙏'
-      ].filter(Boolean).join('\n');
+        'Saya siap hadir langsung di lokasi festival untuk aktivasi kartu. Terima kasih!'
+      ].filter(line => line !== null).join('\n');
     }
 
     // Kirim ke Google Apps Script (Zero-Preflight CORS Safe)
@@ -1125,14 +1119,13 @@
 
         if (d.namaLengkap) document.getElementById('namaLengkap').value = d.namaLengkap;
         if (d.whatsapp) document.getElementById('whatsapp').value = d.whatsapp;
-        if (d.usernameSosmed) document.getElementById('usernameSosmed').value = d.usernameSosmed.replace(/^@/, '');
+        const instagram = d.instagram || (d.platformSosmed === 'Instagram' ? d.usernameSosmed : '');
+        const tiktok = d.tiktok || (d.platformSosmed === 'TikTok' ? d.usernameSosmed : '');
+        if (instagram) document.getElementById('instagram').value = instagram.replace(/^@+/, '');
+        if (tiktok) document.getElementById('tiktok').value = tiktok.replace(/^@+/, '');
         if (d.domisili) document.getElementById('domisili').value = d.domisili;
         if (d.jamDatang) document.getElementById('jamDatang').value = d.jamDatang;
 
-        if (d.platformSosmed) {
-          const r = document.querySelector(`input[name="platformSosmed"][value="${d.platformSosmed}"]`);
-          if (r) r.checked = true;
-        }
         if (d.kehadiran) {
           const r = document.querySelector(`input[name="kehadiran"][value="${d.kehadiran}"]`);
           if (r) {
