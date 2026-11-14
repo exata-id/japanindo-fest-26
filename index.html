@@ -894,16 +894,16 @@
         kind: 'name'
       },
       'Chat WhatsApp': {
-        question: 'Dari nomor WhatsApp mana Anda menerima informasi campaign ini?',
-        placeholder: 'Contoh: +6281234567890 atau +819012345678',
-        error: 'Masukkan nomor WhatsApp yang valid (8–15 digit; disarankan menyertakan kode negara).',
-        kind: 'phone'
+        question: 'Siapa nama WhatsApp atau berapa nomor telepon pengirim informasi campaign ini?',
+        placeholder: 'Contoh: Budi Santoso / +6281234567890',
+        error: 'Masukkan nama WhatsApp atau nomor telepon pengirim informasi (maksimal 200 karakter).',
+        kind: 'contact'
       },
       'Story WhatsApp': {
-        question: 'Berapa nomor WhatsApp pemilik status yang membagikan informasi campaign ini?',
-        placeholder: 'Contoh: +6281234567890 atau +819012345678',
-        error: 'Masukkan nomor WhatsApp pemilik status yang valid (8–15 digit; disarankan menyertakan kode negara).',
-        kind: 'phone'
+        question: 'Siapa nama WhatsApp atau berapa nomor telepon pemilik status yang membagikan informasi campaign ini?',
+        placeholder: 'Contoh: Budi Santoso / +6281234567890',
+        error: 'Masukkan nama WhatsApp atau nomor telepon pemilik status (maksimal 200 karakter).',
+        kind: 'contact'
       }
     };
 
@@ -929,8 +929,8 @@
       document.getElementById('detailSumberFields').hidden = !config;
       input.disabled = !config;
       input.required = Boolean(config);
-      input.type = config?.kind === 'phone' ? 'tel' : 'text';
-      input.inputMode = config?.kind === 'phone' ? 'tel' : 'text';
+      input.type = 'text';
+      input.inputMode = 'text';
       input.placeholder = config?.placeholder || '';
       document.getElementById('detailSumberLabel').textContent = config ? config.question + ' (wajib)' : 'Detail sumber informasi (wajib):';
       document.getElementById('err-detailSumberCampaign').textContent = config?.error || 'Lengkapi detail sumber informasi campaign.';
@@ -944,14 +944,15 @@
         const username = detail.replace(/^@+/, '').trim();
         return username ? '@' + username : '';
       }
-      return config.kind === 'phone' ? detail.replace(/[\s()\-]/g, '') : detail;
+      // Normalisasi hanya nomor yang valid; pertahankan spasi dan tanda baca pada nama.
+      const compactPhone = detail.replace(/[\s()\-]/g, '');
+      return config.kind === 'contact' && /^\+?[0-9]{8,15}$/.test(compactPhone) ? compactPhone : detail;
     }
 
     function isCampaignSourceDetailValid(source, detail) {
       if (!Object.keys(CAMPAIGN_SOURCES).includes(source) || !detail || detail.length > 200 || /[\r\n]/.test(detail)) return false;
       const kind = CAMPAIGN_SOURCES[source].kind;
       if (kind === 'username') return /^@[A-Za-z0-9._]+$/.test(detail);
-      if (kind === 'phone') return /^\+?[0-9]{8,15}$/.test(detail);
       return true;
     }
 
