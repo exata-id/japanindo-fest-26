@@ -532,6 +532,18 @@
       .step-title {
         font-size: 1.35rem;
       }
+      .review-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+      }
+      .review-key {
+        flex-shrink: 1;
+      }
+      .review-val {
+        width: 100%;
+        text-align: left;
+      }
       .nav-actions {
         margin-top: 26px;
       }
@@ -630,13 +642,13 @@
           </div>
 
           <div class="field-group">
-            <label class="field-label" for="instagram">Username Instagram :</label>
+            <label class="field-label" for="instagram">Username Instagram (wajib):</label>
             <input type="text" id="instagram" class="input-box" placeholder="e.g. @username_instagram" required aria-describedby="err-instagram" autocapitalize="none" spellcheck="false" />
             <div class="field-error" id="err-instagram">Username Instagram wajib diisi.</div>
           </div>
 
           <div class="field-group">
-            <label class="field-label" for="tiktok">Username TikTok :</label>
+            <label class="field-label" for="tiktok">Username TikTok (wajib):</label>
             <input type="text" id="tiktok" class="input-box" placeholder="e.g. @username_tiktok" required aria-describedby="err-tiktok" autocapitalize="none" spellcheck="false" />
             <div class="field-error" id="err-tiktok">Username TikTok wajib diisi.</div>
           </div>
@@ -708,6 +720,27 @@
               </select>
             </div>
             <div class="field-error" id="err-domisili">Pilih prefektur domisili Anda saat ini.</div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="sumberCampaign">Dari mana Anda mengetahui campaign ini? (wajib)</label>
+            <div class="select-wrapper">
+              <select id="sumberCampaign" class="select-box" required aria-describedby="err-sumberCampaign" aria-controls="detailSumberFields">
+                <option value="">Pilih sumber informasi campaign...</option>
+                <option value="TikTok">TikTok</option>
+                <option value="Instagram">Instagram</option>
+                <option value="Facebook">Facebook</option>
+                <option value="Chat WhatsApp">Chat WhatsApp</option>
+                <option value="Story WhatsApp">Story WhatsApp</option>
+              </select>
+            </div>
+            <div class="field-error" id="err-sumberCampaign">Pilih sumber informasi campaign.</div>
+          </div>
+
+          <div id="detailSumberFields" class="field-group" aria-live="polite" hidden>
+            <label class="field-label" id="detailSumberLabel" for="detailSumberCampaign">Detail sumber informasi (wajib):</label>
+            <input type="text" id="detailSumberCampaign" class="input-box" maxlength="200" disabled aria-describedby="err-detailSumberCampaign" autocapitalize="none" spellcheck="false" />
+            <div class="field-error" id="err-detailSumberCampaign">Lengkapi detail sumber informasi campaign.</div>
           </div>
         </section>
 
@@ -841,6 +874,38 @@
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwHhz4Qj_NVGQRISzmFrD-nwG2iUYi4XPH9XCuFkJ-QBbrNvwbGMObAH7--A6cg0KewCg/exec';
     const TARGET_WHATSAPP = '6281188899744';
     const STORAGE_KEY = 'ijff_2026_sakura_draft';
+    const CAMPAIGN_SOURCES = {
+      'TikTok': {
+        question: 'Apa username akun TikTok yang membagikan informasi campaign ini?',
+        placeholder: 'Contoh: @akun_tiktok',
+        error: 'Masukkan username TikTok tanpa tautan atau spasi.',
+        kind: 'username'
+      },
+      'Instagram': {
+        question: 'Apa username akun Instagram yang membagikan informasi campaign ini?',
+        placeholder: 'Contoh: @akun_instagram',
+        error: 'Masukkan username Instagram tanpa tautan atau spasi.',
+        kind: 'username'
+      },
+      'Facebook': {
+        question: 'Apa nama akun, halaman, atau grup Facebook yang membagikan informasi campaign ini?',
+        placeholder: 'Contoh: Komunitas Indonesia di Jepang',
+        error: 'Masukkan nama akun, halaman, atau grup Facebook (maksimal 200 karakter).',
+        kind: 'name'
+      },
+      'Chat WhatsApp': {
+        question: 'Dari nomor WhatsApp mana Anda menerima informasi campaign ini?',
+        placeholder: 'Contoh: +6281234567890 atau +819012345678',
+        error: 'Masukkan nomor WhatsApp yang valid (8–15 digit; disarankan menyertakan kode negara).',
+        kind: 'phone'
+      },
+      'Story WhatsApp': {
+        question: 'Berapa nomor WhatsApp pemilik status yang membagikan informasi campaign ini?',
+        placeholder: 'Contoh: +6281234567890 atau +819012345678',
+        error: 'Masukkan nomor WhatsApp pemilik status yang valid (8–15 digit; disarankan menyertakan kode negara).',
+        kind: 'phone'
+      }
+    };
 
     let currentStep = 1;
     const totalSteps = 4;
@@ -856,6 +921,47 @@
     const globalAlert = document.getElementById('globalAlert');
     const scheduleFields = document.getElementById('scheduleFields');
     const attendanceNotice = document.getElementById('attendanceNotice');
+
+    function updateCampaignSourceUI() {
+      const source = document.getElementById('sumberCampaign').value;
+      const config = Object.keys(CAMPAIGN_SOURCES).includes(source) ? CAMPAIGN_SOURCES[source] : null;
+      const input = document.getElementById('detailSumberCampaign');
+      document.getElementById('detailSumberFields').hidden = !config;
+      input.disabled = !config;
+      input.required = Boolean(config);
+      input.type = config?.kind === 'phone' ? 'tel' : 'text';
+      input.inputMode = config?.kind === 'phone' ? 'tel' : 'text';
+      input.placeholder = config?.placeholder || '';
+      document.getElementById('detailSumberLabel').textContent = config ? config.question + ' (wajib)' : 'Detail sumber informasi (wajib):';
+      document.getElementById('err-detailSumberCampaign').textContent = config?.error || 'Lengkapi detail sumber informasi campaign.';
+    }
+
+    function normalizeCampaignSourceDetail(source, raw) {
+      const config = Object.keys(CAMPAIGN_SOURCES).includes(source) ? CAMPAIGN_SOURCES[source] : null;
+      const detail = raw.trim();
+      if (!config) return '';
+      if (config.kind === 'username') {
+        const username = detail.replace(/^@+/, '').trim();
+        return username ? '@' + username : '';
+      }
+      return config.kind === 'phone' ? detail.replace(/[\s()\-]/g, '') : detail;
+    }
+
+    function isCampaignSourceDetailValid(source, detail) {
+      if (!Object.keys(CAMPAIGN_SOURCES).includes(source) || !detail || detail.length > 200 || /[\r\n]/.test(detail)) return false;
+      const kind = CAMPAIGN_SOURCES[source].kind;
+      if (kind === 'username') return /^@[A-Za-z0-9._]+$/.test(detail);
+      if (kind === 'phone') return /^\+?[0-9]{8,15}$/.test(detail);
+      return true;
+    }
+
+    document.getElementById('sumberCampaign').addEventListener('change', () => {
+      document.getElementById('detailSumberCampaign').value = '';
+      updateCampaignSourceUI();
+      setFieldError('err-sumberCampaign', 'sumberCampaign', false);
+      setFieldError('err-detailSumberCampaign', 'detailSumberCampaign', false);
+      saveDraft();
+    });
 
     document.querySelectorAll('input[name="minatAfiliator"]').forEach(radio => {
       radio.addEventListener('change', () => {
@@ -940,6 +1046,8 @@
       };
       const instagram = normalizeUsername('instagram');
       const tiktok = normalizeUsername('tiktok');
+      const sumberCampaign = document.getElementById('sumberCampaign').value;
+      const detailSumberCampaign = normalizeCampaignSourceDetail(sumberCampaign, document.getElementById('detailSumberCampaign').value);
       const kehadiran = document.querySelector('input[name="kehadiran"]:checked')?.value || '';
       const tanggalHadir = document.querySelector('input[name="tanggalHadir"]:checked')?.value || '';
 
@@ -949,6 +1057,8 @@
         instagram: instagram,
         tiktok: tiktok,
         minatAfiliator: document.querySelector('input[name="minatAfiliator"]:checked')?.value || '',
+        sumberCampaign: sumberCampaign,
+        detailSumberCampaign: detailSumberCampaign,
         domisili: document.getElementById('domisili').value,
         kehadiran: kehadiran,
         tanggalHadir: kehadiran === 'Ya' ? tanggalHadir : '-',
@@ -962,7 +1072,9 @@
       const errEl = document.getElementById(errId);
       if (errEl) errEl.style.display = isError ? 'block' : 'none';
       if (inputId) {
-        document.getElementById(inputId)?.classList.toggle('invalid', isError);
+        const input = document.getElementById(inputId);
+        input?.classList.toggle('invalid', isError);
+        input?.setAttribute('aria-invalid', String(isError));
       }
     }
 
@@ -985,6 +1097,12 @@
         const minatOk = ['Ya', 'Tidak'].includes(d.minatAfiliator);
         setFieldError('err-minatAfiliator', null, !minatOk);
         if (!minatOk) valid = false;
+
+        const sourceOk = Object.keys(CAMPAIGN_SOURCES).includes(d.sumberCampaign);
+        setFieldError('err-sumberCampaign', 'sumberCampaign', !sourceOk);
+        const sourceDetailOk = isCampaignSourceDetailValid(d.sumberCampaign, d.detailSumberCampaign);
+        setFieldError('err-detailSumberCampaign', 'detailSumberCampaign', sourceOk && !sourceDetailOk);
+        if (!sourceOk || !sourceDetailOk) valid = false;
 
         for (const platform of ['instagram', 'tiktok']) {
           const userOk = d[platform].length >= 2;
@@ -1026,6 +1144,8 @@
         ['Instagram', data.instagram],
         ['TikTok', data.tiktok],
         ['Tertarik Menjadi Afiliator', data.minatAfiliator],
+        ['Sumber Informasi Campaign', data.sumberCampaign],
+        ['Detail Sumber Informasi', data.detailSumberCampaign],
         ['Domisili di Jepang', data.domisili],
         ['Bisa Hadir?', data.kehadiran],
         ['Tanggal Kehadiran', data.tanggalHadir],
@@ -1053,6 +1173,8 @@
         `• Instagram: ${data.instagram}`,
         `• TikTok: ${data.tiktok}`,
         `• Tertarik Menjadi Afiliator: ${data.minatAfiliator}`,
+        `• Sumber Informasi Campaign: ${data.sumberCampaign}`,
+        `• Detail Sumber Informasi: ${data.detailSumberCampaign}`,
         `• Domisili di Jepang: ${data.domisili}`,
         `• Bisa Hadir ke Festival: ${data.kehadiran}`,
         `• Tanggal Kehadiran: ${data.tanggalHadir}`,
@@ -1156,6 +1278,12 @@
         if (tiktok) document.getElementById('tiktok').value = tiktok.replace(/^@+/, '');
         if (d.domisili) document.getElementById('domisili').value = d.domisili;
         if (d.jamDatang) document.getElementById('jamDatang').value = d.jamDatang;
+
+        if (Object.keys(CAMPAIGN_SOURCES).includes(d.sumberCampaign)) {
+          document.getElementById('sumberCampaign').value = d.sumberCampaign;
+          updateCampaignSourceUI();
+          if (typeof d.detailSumberCampaign === 'string') document.getElementById('detailSumberCampaign').value = d.detailSumberCampaign;
+        }
 
         if (['Ya', 'Tidak'].includes(d.minatAfiliator)) {
           document.querySelector(`input[name="minatAfiliator"][value="${d.minatAfiliator}"]`).checked = true;
